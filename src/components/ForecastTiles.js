@@ -17,7 +17,7 @@ export default class ForecastTiles extends Component {
   // Returns week of the day
   _getDayInfo = data => {
     const daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-    return daysOfWeek[new Date(data[0].dt * 1000).getDay()];
+    return daysOfWeek[new Date(data[0].dt * 1000).getUTCDay()];
   };
 
   // Fetches the icon using the icon code available in the forecast data.
@@ -74,7 +74,8 @@ export default class ForecastTiles extends Component {
     // Edge case:
     // When the webservice returns data for 6 calendar days during evenings as a result of offset,
     // this ensures that we are showing only 5-days of forecast.
-    const forecastTiles = tiles.length > 5 ? tiles.slice(0, 5) : tiles;
+    const forecastTiles = tiles.length > 5 ?(new Date(tiles[0][0].dt*1000).getDate()=== new Date(tiles[0][0].dt*1000).getUTCDate())?tiles.slice(0, 5):
+    (tiles.slice(1, 6)):tiles;
 
     return (
       <div className="forecast-tiles">
